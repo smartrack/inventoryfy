@@ -19,41 +19,45 @@
                   <legend style="display:none">Create Sales Order</legend>
 				<table class="table">
                 <tbody><tr>
-                  <th><label  for="inputCustomerName">Customer</label></th>
-                  <th><label  for="inputProductName">Product Name</label></th>
-                  <th><label  for="inputPurchaseDate">Date</label></th>
-                  <th><label  for="inputProductPrice">Price</label></th>
-                  <th><label  for="inputProductQty">Quantity</label></th>
+                  <th><label  for="customer_name">Customer</label></th>
+                  <th><label  for="inv_id">Product Name</label></th>
+                  <th><label  for="selling_date">Date</label></th>
+                  <th><label  for="selling_price">Price</label></th>
+                  <th><label  for="selling_qty">Quantity</label></th>
+                  <th><label  for="comments">Comments</label></th>
                 </tr>
                 <tr>
                   <td>
-					<input type="text" id="inputCustomerName" class="form-control" ng-model="customer_name">					 
+					<input type="text" id="customer_name" class="form-control" ng-model="customer_name" ng-required="true">					 
 				  </td>
                   <td>	
-					<select id="inv_list_id" class="form-control" ng-model="inv_id" ng-required="true" ng-options="inv.label for inv in invDropdownList" ng-change="prefillsalesrow()">						
+					<select id="inv_id" ng-required="true" class="form-control" ng-model="inv_id" ng-required="true" ng-options="inv.label for inv in invDropdownList" ng-change="prefillsalesrow()">						
 					</select>				  
 				  </td>
                    <td class="col-lg-2">
 					   <div class="input-group date">
-						<input type="text" class="form-control date-picker" id="selling_date" ng-model="selling_date">
+						<input type="text" class="form-control date-picker" id="selling_date" ng-model="selling_date" data-date-format="dd-mm-yyyy">
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 					  </div>
 				  </td>
                   <td class="col-lg-2">
 					  <div class="input-group">
-                      <input type="number" id="inputProductPrice" class="form-control" ng-model="selling_price">
+                      <input type="number" id="selling_price" class="form-control" ng-model="selling_price" ng-required="true">
 					  <span class="input-group-addon">&#8377;</span>
 					  </div>
 				  </td>
                   <td class="col-lg-2">
-                      <input type="text" id="sell_qty" class="form-control" ng-model="selling_qty" value="1">
+                      <input type="number" id="selling_qty" class="form-control" ng-model="selling_qty" ng-required="true">
+				  </td>
+                  <td>
+                      <textarea id="comments" class="form-control" ng-model="comments"></textarea>
 				  </td>
                 </tr>
 				</tbody>
 				</table>
                   <div class="panel-body">
-                      <button class="btn btn-default">Cancel</button> 
-                      <button class="btn btn-primary" type="submit">Submit</button> 
+                      <button class="btn btn-default" type="reset">Cancel</button> 
+                      <button class="btn btn-primary" ng-click="postRecord('m_sales')">Submit</button> 
                   </div>
                 </fieldset>
               </form>
@@ -66,7 +70,7 @@
 				<div class="panel-heading">					
 						<h5 class="pull-left">Sales List</h5>
 						<div class="col-xs-4 col-md-offset-1">
-						<input type="text" class="form-control input-sm" placeholder="Search">
+						<input type="text" class="form-control input-sm" placeholder="Search" ng-model="soSearchTxt">
 						</div>
 					<div class="clearfix"></div>
 				</div>
@@ -79,28 +83,23 @@
                   <th>Date</th>
                   <th>Price</th>
                   <th>Qty</th>
+                  <th>Comments</th>
                 </tr>
-                <tr>
-                  <td>1</td>
-				  <td><span class="glyphicon glyphicon-pencil"></span></td>
-                  <td>Nokia Dharmapuri</td>
-                  <td>Mobile</td>
-                  <td>15-Jan-2014</td>
-                  <td>15,000</td>
-                  <td>15</td>
-                </tr>
+				
+				<tr ng-repeat="item in salesOrderList | filter:soSearchTxt" ng-click="editListItem($index,'salesOrderList')" ng-init="salesOrderList=[]">
+					<td>{literal}{{$index+1}}{/literal}</td>
+					<td><span class="glyphicon glyphicon-pencil"></span></td>
+					<td>{literal}{{item.customer_name}}{/literal}</td>
+					<td>{literal}{{item.inv_name}}{/literal}</td>
+					<td>{literal}{{item.sell_date | date : date : 'yyyy-MM-dd HH:mm:ss Z'}}{/literal}</td>
+					<td>{literal}{{item.selling_price}}{/literal}</td>
+					<td>{literal}{{item.selling_qty}}{/literal}</td>
+					<td>{literal}{{item.comments}}{/literal}</td>
+				</tr>
 				
 				</tbody></table>				
 				</div>
-				<ul class="pagination">
-                <li class="disabled"><a href="#">«</a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">»</a></li>
-              </ul>
+				
 			</div>
 			</div>
             <!-- /.row -->
@@ -108,16 +107,21 @@
         <!-- /#page-wrapper -->
 		<script>
 		$(document).ready(function(){
-			setTimeout(function(){
-			$('#selling_date').datepicker({
+			//setTimeout(function(){
+			$('#selling_date').datepicker();//
+			/*
+			{
 				format: 'mm-dd-yyyy'
 			})
 			.datepicker('setValue', new Date())
 			.on('changeDate blur',function(e){
-				$(this).datepicker('hide');				
+				$(this).datepicker('hide');
+				console.log(e);
 			});
+			//},1000);*/
+			setTimeout(function(){
+				$('#selling_date').datepicker('setValue', new Date())
 			},1000);
-			
 			$("input").filter(function(){ return $(this).attr('type') == 'number' }).keyup(function(){				
 				var $this = $(this);
 				var $thisVal = $this.val();
@@ -131,7 +135,8 @@
 				}
 				$this.val(num);
 			});
-			$("#sell_qty").TouchSpin({
+			
+			$("#selling_qty").TouchSpin({
                 min: 1,
                 step: 1,
 				initval : 1

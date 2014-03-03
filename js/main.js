@@ -95,6 +95,7 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 	switch(pageName.b){		
 		case 'dashboard':{
 			$scope.dashboardMenu = true;
+			loadDefaultView('getDashboardItems',['topFiveInvList','topFiveSalesList','dailySalesGraph']);
 			break;
 		}
 		case 'm_brand':{
@@ -110,7 +111,7 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 		case 'm_product_list':{$scope.productListMenu = true;break;}
 		case 'sales':{
 			$scope.salesMenu = true;
-			loadDefaultView('get_inventory',['invDropdownList']);
+			loadDefaultView('get_inventory_and_sales',['invDropdownList','salesOrderList']);
 			break;
 		}
 		case 'inv':{
@@ -166,6 +167,8 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 					$scope[key] =  $filter('filter')($scope.brandDropdownList,value)[0];
 				}else if(key == "prod_id"){
 					$scope[key] =  $filter('filter')($scope.productDropdownList,value)[0];
+				}else if(key == "inv_id"){
+					$scope[key] =  $filter('filter')($scope.invDropdownList,value)[0];
 				}else{
 					$scope[key] = isNaN(value) ? value : parseInt(value,10);	
 				}
@@ -176,8 +179,19 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 	
 	/* Ajax Post method to insert values in DB */
 	$scope.postRecord = function(pageName){		
-		var postData  = captureFormData(); 	
-		/*
+		var postData  = captureFormData(); 
+		/*var key = 'salesOrderList';
+		var obj = {};
+		 $scope[key] = !angular.isDefined($scope[key]) ? [] :  $scope[key];
+		var size = $scope[key].length;
+		if(size > 0 ){
+			angular.forEach($scope[key][0],function(v,k){
+				obj[k] = $scope[k];
+				console.log($scope[k]);
+			});	
+			$scope[key].push(obj);
+		}
+		
 		console.log($scope['inventoryItemList'].length);
 		console.log(captureFormData("json"));
 		$scope['inventoryItemList'].push.apply(captureFormData("json"));
@@ -216,7 +230,8 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 						document['forms'][0].reset();
 						$scope.buttonTxt = 'Add';	
 					}else if(angular.isObject(val) && !val.updateFlag){
-						var obj = new Object();
+						var obj = {};
+						 $scope[key] = !angular.isDefined($scope[key]) ? [] :  $scope[key];
 						var size = $scope[key].length;
 						if(size > 0 ){
 							angular.forEach($scope[key][0],function(v,k){
@@ -236,6 +251,7 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 		
 		$interval(function(){$scope.alertBoxClass = "hidden";}, 10000,1); 
 		
+		
 	}
 	
 	$scope.prefillsalesrow = function(){
@@ -250,8 +266,12 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 			if(angular.isObject(data) && angular.isString(listName)){				
 				$scope[listName] = data;
 			}else if(angular.isObject(data) && angular.isArray(listName)){				
-				angular.forEach(listName,function(name,index){
-					$scope[name]=data[0][name];
+				angular.forEach(listName,function(name,index){					
+					if(name.indexOf('Graph')>0){
+						loadGraph(data[0][name]);
+					}else{
+						$scope[name]=data[0][name];
+					}
 				});
 			}				
 		}).error(function(err){
@@ -282,8 +302,10 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 			var $this = angular.element(ele);
 			var $id = $this.attr('id');			
 			var $model = $this.attr('ng-model');	
-			var $val = $scope[$model];
+			var $val = $scope[$model];	
+			console.log($val);
 			$val = angular.isObject($val) ? $val.value : $val;
+			$val = !angular.isDefined($val) ? $this.val() : $val;
 			$val = $this.hasClass("date-picker") ? HMZIApp.getTimeStamp($this.val().toString()) : $val;
 			if(typeof $id != "undefined"){
 				if(type == "json"){
@@ -312,5 +334,16 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 		});
 	}
 	
+	function loadGraph(data){
+		Morris.Line({
+        element: 'morris-area-chart',
+        data: data,
+        xkey: 'date',
+        ykeys: ['qty'],
+        labels: ['# items solds'],
+        hideHover: 'auto',
+        resize: true
+    });
 	
+	}
 });

@@ -1,4 +1,7 @@
-        <div id="page-wrapper">
+        <!-- Page-Level Plugin CSS - Morris -->
+    <link href="css/plugins/morris-0.4.3.min.css" rel="stylesheet">
+	
+		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Dashboard</h1>
@@ -47,34 +50,14 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-bars fa-fw"></i> Nokia Lumia - Saravanan
-                                    <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-bars fa-fw"></i> Samsung Galaxy - Ashok
-                                    <span class="pull-right text-muted small"><em>12 minutes ago</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-bars fa-fw"></i> Nokia Battery - Kumar
-                                    <span class="pull-right text-muted small"><em>27 minutes ago</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-bars fa-fw"></i> Nokia Charger - Arul
-                                    <span class="pull-right text-muted small"><em>43 minutes ago</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-bars fa-fw"></i> 4GB SD Memory Card - Mani
-                                    <span class="pull-right text-muted small"><em>11:32 AM</em>
+                                <a href="#" class="list-group-item" ng-repeat="list in topFiveSalesList">
+                                    <i class="fa fa-bars fa-fw"></i> {literal}{{list.inv_name}}{/literal} - {literal}{{list.customer_name}}{/literal}
+                                    <span class="pull-right text-muted small"><em>{literal}{{list.sell_date | date : date : 'H'}}{/literal}</em>
                                     </span>
                                 </a>
                             </div>
                             <!-- /.list-group -->
-                            <a href="#" class="btn btn btn-primary btn-block">View All Items</a>
+                            <a href="?a=P&b=sales" class="btn btn btn-primary btn-block">View All Items</a>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -85,31 +68,21 @@
                         </div>
                         <div class="panel-body">
                             <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Product Name</th>
-                                            <th>Stock Qty</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Samsung</td>
-                                            <td><span class="badge">42</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Motorolla</td>
-                                            <td><span class="badge">12</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Nokia</td>
-                                            <td><span class="badge">22</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Product Name</th>
+										<th>Stock Qty</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="list in topFiveInvList">
+										<td>{literal}{{$index+1}}{/literal}</td>
+										<td>{literal}{{list.prod_name}}{/literal}</td>
+										<td><span class="badge">{literal}{{list.prod_qty}}{/literal}</span></td>
+									</tr>
+								</tbody>
+                            </table>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -120,4 +93,8 @@
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
+		<!-- Page-Level Plugin Scripts - Morris -->
+	<script src="js/jquery-1.10.2.js"></script>
+    <script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="js/plugins/morris/morris.js"></script>
 		

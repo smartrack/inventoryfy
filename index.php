@@ -66,6 +66,10 @@
 				$inv->isSessionActive();
 				$inv->add_inventory();
 				break;
+			case 'm_sales':
+				$inv->isSessionActive();
+				$inv->add_sales_order();
+				break;
 			case 'getBrands':
 				$inv->isSessionActive();
 				$inv->get_brands();
@@ -90,9 +94,13 @@
 				$inv->isSessionActive();
 				$inv->getBrandsProductsAndInv();
 				break;
-			case 'get_inventory':
+			case 'get_inventory_and_sales':
 				$inv->isSessionActive();
-				$inv->getInventory();
+				$inv->getInventoryAndSales();
+				break;
+			case 'getDashboardItems':
+				$inv->isSessionActive();
+				$inv->getDashboardPanelRecords();
 				break;
 		}
 	}

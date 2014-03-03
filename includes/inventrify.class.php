@@ -92,7 +92,8 @@ class inventrify extends Smarty {
 		return TRUE;
 	}
 	 # Function to Run Query Runs All Queries and Logs Their Stats
-	 public function runQuery($type='execute',$sql='',$time=0) {
+	public function runQuery($type='execute',$sql='',$time=0) {
+		
 		$this->setDB();
 		if(!$this->db) {
 				$this->setDB();
@@ -208,6 +209,15 @@ class inventrify extends Smarty {
 		else
 			echo 'Error while inserting inventory tbl';
 	}
+	#Function to insert sales order
+	public function add_sales_order() {
+		$values=array("customer_name"=>$_POST['customer_name'],"product_id"=>$_POST['inv_id'],"sell_price"=>$_POST['selling_price'],"sell_date"=>$_POST['selling_date'],"prod_qty"=>$_POST['selling_qty'],"comments"=>$_POST['comments']);
+		if($this->insert("sales_order",$values)) {			
+			echo '{"salesOrderList":{"updateFlag":false}}';
+		}
+		else
+			echo 'Error while inserting sales tbl';
+	}
 	# Function to update brands
 	public function update_brand() {
 		$values=array("brand_name"=>$_POST['brand_name'],"description"=>$_POST['description']);
@@ -252,11 +262,27 @@ class inventrify extends Smarty {
 		echo '[{"brandDropdownList":'.json_encode($bresult).',"productDropdownList":'.json_encode($presult).',"inventoryItemList":'.json_encode($invresult).'}]';
 	}
 	# Function to fetch inventory to pre populate dropdown values
-	public function getInventory() {
+	public function getInventoryAndSales() {
 		$isql="SELECT i.id as value,i.item_name as label,i.sell_price,i.quantity FROM inventory i where rstatus='A'";		
 		$iresult=$this->runQuery('getAll',$isql);
 		
-		echo '[{"invDropdownList":'.json_encode($iresult).'}]';
+		$sosql="SELECT so.id as id,p.item_name as inv_name,so.sell_date,so.customer_name,so.sell_price as selling_price,so.prod_qty as selling_qty,so.comments FROM sales_order so, inventory p where p.id = so.product_id";		
+		$soresult=$this->runQuery('getAll',$sosql);
+		
+		echo '[{"invDropdownList":'.json_encode($iresult).',"salesOrderList":'.json_encode($soresult).'}]';
+	}
+	# Function to fetch inventory to pre populate dropdown values
+	public function getDashboardPanelRecords() {
+		$isql="select i.item_name as prod_name, i.quantity as prod_qty from inventory i limit 5";		
+		$iresult=$this->runQuery('getAll',$isql);
+		
+		$sosql="SELECT p.item_name as inv_name,so.customer_name,so.sell_date FROM sales_order so, inventory p where p.id = so.product_id limit 5";		
+		$soresult=$this->runQuery('getAll',$sosql);
+		
+		$drsql="select prod_qty as qty, date(sell_date) as date from sales_order order by sell_date";		
+		$drresult=$this->runQuery('getAll',$drsql);
+		
+		echo '[{"topFiveInvList":'.json_encode($iresult).',"topFiveSalesList":'.json_encode($soresult).',"dailySalesGraph":'.json_encode($drresult).'}]';
 	}
 	
 }
