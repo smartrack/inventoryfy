@@ -1,3 +1,5 @@
+
+
 var hmzinventoryApp = angular.module("hmzinventoryApp",[]);
 var HMZIApp = {
 		/*Utility function to convert query string to json object */
@@ -24,8 +26,29 @@ var HMZIApp = {
 					angular.element(div).html(msg);
 				}
 			});
+		},
+		removeArray : function(arr, from, to) {
+		  var rest = arr.slice((to || from) + 1 || arr.length);
+		  arr.length = from < 0 ? arr.length + from : from;
+		  arr.push.apply(arr, rest);
+		  return arr;
 		}
 };
+
+hmzinventoryApp.directive('input', [function() {
+    return {
+        restrict: 'E',
+        require: '?ngModel',
+        link: function(scope, el, attrs, ctrl) {
+            if (attrs.type == 'number' && typeof el.prop('validity') !== 'undefined') {
+                el.on('keyup change', function() {
+                    var validity = el.prop('validity');
+                    ctrl.$setValidity('badInput', !validity.badInput);                      
+                });
+            }
+        }
+    };
+}]);
 
 hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval,$location,$http,$filter){
 	/* Variable Initialization */
@@ -39,6 +62,7 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 	$scope.inventoryItemList = [];
 	$scope.buttonTxt = 'Add';
 	$scope.purchaseDate = Date.now();
+	$scope.formAction = '';
 	$scope.leftMenuItems = [{
 		'target' : '?a=P&b=dashboard',
 		'icon' : 'fa fa-dashboard fa-fw',
@@ -57,12 +81,12 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 	},{
 		'target' : '?a=P&b=m_p_list',
 		'icon' : 'fa fa-dashboard fa-fw',
-		'class' : '',
+		'class' : 'ng-hide',
 		'name' : 'Products List'
 	},{
 		'target' : '?a=P&b=m_units',
 		'icon' : 'fa fa-plus-square fa-fw',
-		'class' : '',
+		'class' : 'ng-hide',
 		'name' : 'Unit Master'
 	},{
 		'target' : '?a=P&b=sales',
@@ -153,13 +177,13 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 	$window.onload = timer;
 	
 	$scope.editListItem = function(index,arrayList){
+		$scope.row_index = index;
 		if(typeof arrayList == "undefined"){
 			$scope.itemNameModel = $scope.masterItemsList[index].item_name;
 			$scope.itemDescModel = $scope.masterItemsList[index].item_desc;
 			$scope.itemIdModel = $scope.masterItemsList[index].item_id;
 		}else{			
-			angular.forEach($scope[arrayList][index],function(value,key){
-				$scope.row_index = index;
+			angular.forEach($scope[arrayList][index],function(value,key){				
 				if(key.indexOf('date') > 0){
 					$scope[key] = $filter('date')(value, 'MM-dd-yyyy');
 				}
@@ -178,86 +202,116 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 	}
 	
 	/* Ajax Post method to insert values in DB */
-	$scope.postRecord = function(pageName){		
-		var postData  = captureFormData(); 
-		/*var key = 'salesOrderList';
-		var obj = {};
-		 $scope[key] = !angular.isDefined($scope[key]) ? [] :  $scope[key];
-		var size = $scope[key].length;
-		if(size > 0 ){
-			angular.forEach($scope[key][0],function(v,k){
-				obj[k] = $scope[k];
-				console.log($scope[k]);
-			});	
-			$scope[key].push(obj);
-		}
-		
-		console.log($scope['inventoryItemList'].length);
-		console.log(captureFormData("json"));
-		$scope['inventoryItemList'].push.apply(captureFormData("json"));
-		console.log($scope['inventoryItemList'].length);
-		*/
-		
-		pageName = $scope.buttonTxt == 'Update' ? 'update_'+pageName : pageName;
-		var configObject = {
-			method : 'POST',
-			url : 'index.php',
-			params : {'a':'A','b':pageName},
-			data  : postData,
-			reponseType : 'text/html'
-		};
-		
-		$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-		
-		$http(configObject)
-		.success(function(data){
-			if(!isNaN(data) && data == 1){
-				HMZIApp.updateMessage('<span class="glyphicon glyphicon-ok"></span> Added Item Successfully');
-				$scope.alertBoxClass = "alert-success";
-				if($scope.buttonTxt == 'Update'){
-					updateMasterListItem();
-				}else{
-					$scope.masterItemsList.push({'item_name':$scope.itemNameModel,'item_desc':$scope.itemDescModel});
-				}
-				document['forms'][0].reset();
-				$scope.buttonTxt = 'Add';	
-			}else if(angular.isObject(data)){
-				angular.forEach(data,function(val,key){
-					if(angular.isObject(val) && val.updateFlag){
-						angular.forEach($scope[key][val.rowIndex],function(v,k){
-							$scope[key][val.rowIndex][k] = $scope[k];
-						});
-						document['forms'][0].reset();
-						$scope.buttonTxt = 'Add';	
-					}else if(angular.isObject(val) && !val.updateFlag){
-						var obj = {};
-						 $scope[key] = !angular.isDefined($scope[key]) ? [] :  $scope[key];
-						var size = $scope[key].length;
-						if(size > 0 ){
-							angular.forEach($scope[key][0],function(v,k){
-								obj[k] = $scope[k];
-							});	
-							$scope[key].push(obj);
-						}
-						document['forms'][0].reset();
-						$scope.buttonTxt = 'Add';	
-					}
-				});
+	$scope.postRecord = function(pageName){	
+		//console.log('true');
+			var postData  = captureFormData(); 
+			/*var key = 'salesOrderList';
+			var obj = {};
+			 $scope[key] = !angular.isDefined($scope[key]) ? [] :  $scope[key];
+			var size = $scope[key].length;
+			if(size > 0 ){
+				angular.forEach($scope[key][0],function(v,k){
+					obj[k] = $scope[k];
+					console.log($scope[k]);
+				});	
+				$scope[key].push(obj);
 			}
-		})
-		.error(function(){
-			HMZIApp.updateMessage('<span class="glyphicon warning-sign"></span> Oops!!! Failed To Add Item. Please try again!');
-		});
-		
-		$interval(function(){$scope.alertBoxClass = "hidden";}, 10000,1); 
-		
-		
+			
+			console.log($scope['inventoryItemList'].length);
+			console.log(captureFormData("json"));
+			$scope['inventoryItemList'].push.apply(captureFormData("json"));
+			console.log($scope['inventoryItemList'].length);
+			*/
+			
+			pageName = $scope.formAction == 'delete' ? 'del_'+pageName : ($scope.buttonTxt == 'Update' ? 'update_'+pageName : pageName);			
+			
+			var configObject = {
+				method : 'POST',
+				url : 'index.php',
+				params : {'a':'A','b':pageName},
+				data  : postData,
+				reponseType : 'text/html'
+			};
+			
+			$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+			
+			$http(configObject)
+			.success(function(data){
+				successCallBackFn(data);
+				$scope.formAction = '';
+			})
+			.error(function(){
+				HMZIApp.updateMessage('<span class="glyphicon warning-sign"></span> Oops!!! Failed To Add Item. Please try again!');
+				$scope.formAction = '';
+			});
+			
+			$interval(function(){$scope.alertBoxClass = "hidden";}, 10000,1); 
+			
+	}
+	
+	$scope.voidRecord = function(pageName){
+		if(confirm('Are you sure want to delete?')){
+			$scope.formAction = 'delete';
+			$scope.postRecord(pageName);
+		}
 	}
 	
 	$scope.prefillsalesrow = function(){
 		var selectedInv = $scope.inv_id;
 		$scope.selling_price = parseFloat(selectedInv.sell_price);
 		jQuery("#sell_qty").trigger("touchspin.updatesettings", {max: selectedInv.quantity});
+	}
+	
+	function successCallBackFn(data){
+		//console.log(data);
+		if(angular.isArray(data) && typeof data[0]['id'] != 'undefined'){
+			HMZIApp.updateMessage('<span class="glyphicon glyphicon-ok"> </span> Added Item Successfully');
+			$scope.alertBoxClass = "alert-success";
+			$scope.itemIdModel = data[0].id.toString();
+			$scope.masterItemsList.unshift({'item_name':$scope.itemNameModel,'item_desc':$scope.itemDescModel,'item_id':$scope.itemIdModel});				
+			document['forms'][0].reset();
+			$scope.buttonTxt = 'Add';	
+		}else if(!isNaN(data) && data == 1){
+			HMZIApp.updateMessage('<span class="glyphicon glyphicon-ok"> </span> Item Updated Successfully');
+			$scope.alertBoxClass = "alert-success";
+			if($scope.buttonTxt == 'Update'){
+				updateMasterListItem();
+			}
+			document['forms'][0].reset();
+			$scope.buttonTxt = 'Add';	
+		}else if(angular.isObject(data)){
+			angular.forEach(data,function(val,key){
+				if(angular.isObject(val) && angular.isString(val.updateFlag) && val.updateFlag=="void"){
+					HMZIApp.updateMessage('<span class="glyphicon glyphicon-ok"></span> Item Deleted Successfully');	
+					$scope.alertBoxClass = "alert-success";
+					$scope[key] = HMZIApp.removeArray($scope[key],val.rowIndex);
+					document['forms'][0].reset();
+					$scope.buttonTxt = 'Add';	
+				}else if(angular.isObject(val) && val.updateFlag){
+					HMZIApp.updateMessage('<span class="glyphicon glyphicon-ok"></span> Item Updated Successfully');
+					$scope.alertBoxClass = "alert-success";
+					angular.forEach($scope[key][val.rowIndex],function(v,k){
+						$scope[key][val.rowIndex][k] = $scope[k];
+					});
+					document['forms'][0].reset();
+					$scope.buttonTxt = 'Add';	
+				}else if(angular.isObject(val) && !val.updateFlag){
+					HMZIApp.updateMessage('<span class="glyphicon glyphicon-ok"></span> Added Item Successfully');
+					$scope.alertBoxClass = "alert-success";
+					var obj = {};
+					 $scope[key] = !angular.isDefined($scope[key]) ? [] :  $scope[key];
+					var size = $scope[key].length;
+					if(size > 0 ){
+						angular.forEach($scope[key][0],function(v,k){
+							obj[k] = $scope[k];
+						});	
+						$scope[key].unshift(obj);
+					}
+					document['forms'][0].reset();
+					$scope.buttonTxt = 'Add';	
+				}
+			});
+		}
 	}
 	
 	function loadDefaultView(pageName,listName){
@@ -303,7 +357,7 @@ hmzinventoryApp.controller("inventoryListCtrl",function($scope,$window,$interval
 			var $id = $this.attr('id');			
 			var $model = $this.attr('ng-model');	
 			var $val = $scope[$model];	
-			console.log($val);
+			//console.log($val);
 			$val = angular.isObject($val) ? $val.value : $val;
 			$val = !angular.isDefined($val) ? $this.val() : $val;
 			$val = $this.hasClass("date-picker") ? HMZIApp.getTimeStamp($this.val().toString()) : $val;

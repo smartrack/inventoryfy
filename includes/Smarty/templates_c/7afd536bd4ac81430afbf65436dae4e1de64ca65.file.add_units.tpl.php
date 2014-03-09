@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.16, created on 2014-02-17 21:38:14
+<?php /* Smarty version Smarty-3.1.16, created on 2014-03-09 00:24:54
          compiled from "C:\Apache Group\Apache2.2\htdocs\smartrack\includes\Smarty\templates\add_units.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:171475302c455d092c3-78837579%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '7afd536bd4ac81430afbf65436dae4e1de64ca65' => 
     array (
       0 => 'C:\\Apache Group\\Apache2.2\\htdocs\\smartrack\\includes\\Smarty\\templates\\add_units.tpl',
-      1 => 1392691093,
+      1 => 1394305669,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <?php if ($_valid && !is_callable('content_5302c455d8dfe7_83172071')) {function content_5302c455d8dfe7_83172071($_smarty_tpl) {?><div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h4 class="page-header">Units Master</h4>
+			<h1 class="page-header h3">Units Master</h1>
 			<div class="alert {{alertBoxClass}}" ng-init="alertBoxClass='hidden'"></div>
 		</div>
 		<!-- /.col-lg-12 -->
@@ -32,28 +32,31 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 		<div class="col-lg-4">
 			<div class="panel panel-info">
 				<div class="panel-heading">Add items</div>
-					<form class="bs-example form-horizontal">
+					<form class="form-horizontal" name="smartrackform">
 						<fieldset>
 							<legend style="display:none">Create items</legend>
 							<table class="table">
 								<tbody>
 									<tr>
 									<td><label  for="inputCustomerName">Unit Name</label></td>
-									<td><input type="text" id="unit_name" class="form-control" ng-model="itemNameModel"></td>
+									<td>
+										<input type="text" id="unit_name" class="form-control" ng-model="itemNameModel" ng-required="true">
+										<input type="hidden" ng-model="row_index" id="row_index">
+									</td>
 									</tr>
 									<tr>
 									<td><label  for="inputCustomerName">Items per Unit</label></td>
-									<td><input type="text" id="items_per_unit" class="form-control" ng-model="itemPerUnitModel"></td>
+									<td><input type="text" id="items_per_unit" class="form-control" ng-model="itemPerUnitModel" ng-required="true"></td>
 									</tr>
 									<tr>
 									<td><label  for="inputProductName">Description</label></td>
-									<td><textarea id="description" class="form-control" ng-model="itemDescModel"></textarea></td>
+									<td><textarea id="description" class="form-control" ng-model="itemDescModel" ng-required="true"></textarea></td>
 									</tr>
 								</tbody>
 							</table>
 							<div class="panel-body">
-							<button class="btn btn-default" type="reset" ng-click="buttonTxt='Add'">Clear</button> 
-							<button class="btn btn-primary" ng-click="postRecord('m_units')">{{buttonTxt}}</button> 
+							<button class="btn btn-info" type="reset" ng-click="buttonTxt='Add'">Clear</button> 
+							<button class="btn btn-primary {{smartrackform.$valid ? '' : 'disabled'}}" ng-click="postRecord('m_units')">{{buttonTxt}}</button> 
 							</div>
 						</fieldset>
 					</form>

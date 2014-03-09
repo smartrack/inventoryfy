@@ -182,7 +182,8 @@ class inventrify extends Smarty {
 	public function add_brand() {
 		$values=array("brand_name"=>$_POST['brand_name'],"description"=>$_POST['description']);
 		if($this->insert("brands",$values)) {
-			echo true;
+			$result=$this->runQuery('getAll','select max(id) as id from brands');
+			echo json_encode($result);
 		}
 		else
 			echo 'Error while inserting';
@@ -196,15 +197,17 @@ class inventrify extends Smarty {
 	public function add_product() {
 		$values=array("product_name"=>$_POST['product_name'],"description"=>$_POST['description']);
 		if($this->insert("products",$values)) {			
-			echo true;
+			$result=$this->runQuery('getAll','select max(id) as id from products');
+			echo json_encode($result);
 		}
 		else
 			echo 'Error while inserting product tbl';
 	}# Function to add products
 	public function add_inventory() {
 		$values=array("brand_id"=>$_POST['brand_list_id'],"product_id"=>$_POST['product_list_id'],"item_name"=>$_POST['item_name'],"entry_date"=>$_POST['purchase_date'],"buy_price"=>$_POST['product_buy_price'],"sell_price"=>$_POST['product_sell_price'],"quantity"=>$_POST['item_qty'],"update_by"=>isset($_SESSION['user_id']));
-		if($this->insert("inventory",$values)) {			
-			echo '{"inventoryItemList":{"updateFlag":false}}';
+		if($this->insert("inventory",$values)) {	
+			$result=$this->runQuery('getAll','select max(id) as id from products');
+			echo '{"inventoryItemList":{"updateFlag":false,"item":'.json_encode($result).'}}';
 		}
 		else
 			echo 'Error while inserting inventory tbl';
@@ -228,6 +231,28 @@ class inventrify extends Smarty {
 		else
 			echo 'Error while updating';
 	}
+	# Function to delete brands
+	public function delete_brand() {
+		$values=array("rstatus"=>"C");
+		$rowIndex = $_POST['row_index'];
+		$where =array("id"=>$_POST['brand_id']);
+		if($this->update("brands",$values,$where)) {			
+			echo '{"masterItemsList":{"updateFlag":"void","rowIndex":'.$rowIndex.'}}';
+		}
+		else
+			echo 'Error while deleting';
+	}
+	# Function to delete product
+	public function delete_product() {
+		$values=array("rstatus"=>"C");
+		$rowIndex = $_POST['row_index'];
+		$where =array("id"=>$_POST['product_id']);
+		if($this->update("products",$values,$where)) {			
+			echo '{"masterItemsList":{"updateFlag":"void","rowIndex":'.$rowIndex.'}}';
+		}
+		else
+			echo 'Error while deleting';
+	}
 	# Function to update products
 	public function update_product() {
 		$values=array("product_name"=>$_POST['product_name'],"description"=>$_POST['description']);				
@@ -249,6 +274,17 @@ class inventrify extends Smarty {
 		else
 			echo 'Error while updating';
 	}
+	# Function to delete inventory
+	public function delete_inventory() {
+		$values=array("rstatus"=>"C");
+		$rowIndex = $_POST['row_index'];
+		$where =array("id"=>$_POST['inv_item_id']);
+		if($this->update("inventory",$values,$where)) {			
+			echo '{"inventoryItemList":{"updateFlag":"void","rowIndex":'.$rowIndex.'}}';
+		}
+		else
+			echo 'Error while deleting';
+	}
 	# Function to get brand, products to pre populate dropdown values
 	public function getBrandsProductsAndInv() {
 		$bsql="SELECT b.id as value,b.brand_name as label FROM brands b where rstatus='A'";		
@@ -257,7 +293,7 @@ class inventrify extends Smarty {
 		$psql="SELECT p.id as value,p.product_name as label FROM products p where rstatus='A'";		
 		$presult=$this->runQuery('getAll',$psql);
 		
-		$invsql="select i.id as inv_item_id, b.brand_name as brand_name,b.id as brand_id, p.product_name as prod_name, p.id as prod_id, i.item_name as prod_name, i.entry_date as purchase_date, i.buy_price as buy_price, i.sell_price as sell_price, i.quantity as prod_qty from inventory i,brands b,products p where b.id = i.brand_id and p.id = i.product_id";		
+		$invsql="select i.id as inv_item_id, b.brand_name as brand_name,b.id as brand_id, p.product_name as prod_name, p.id as prod_id, i.item_name as prod_name, i.entry_date as purchase_date, i.buy_price as buy_price, i.sell_price as sell_price, i.quantity as prod_qty from inventory i,brands b,products p where b.id = i.brand_id and p.id = i.product_id and i.rstatus = 'A'";		
 		$invresult=$this->runQuery('getAll',$invsql);
 		echo '[{"brandDropdownList":'.json_encode($bresult).',"productDropdownList":'.json_encode($presult).',"inventoryItemList":'.json_encode($invresult).'}]';
 	}
@@ -279,7 +315,7 @@ class inventrify extends Smarty {
 		$sosql="SELECT p.item_name as inv_name,so.customer_name,so.sell_date FROM sales_order so, inventory p where p.id = so.product_id limit 5";		
 		$soresult=$this->runQuery('getAll',$sosql);
 		
-		$drsql="select prod_qty as qty, date(sell_date) as date from sales_order order by sell_date";		
+		$drsql="select count(prod_qty) as qty, date(sell_date) as date from sales_order group by sell_date";		
 		$drresult=$this->runQuery('getAll',$drsql);
 		
 		echo '[{"topFiveInvList":'.json_encode($iresult).',"topFiveSalesList":'.json_encode($soresult).',"dailySalesGraph":'.json_encode($drresult).'}]';

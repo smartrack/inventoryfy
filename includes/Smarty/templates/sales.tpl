@@ -5,7 +5,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Sales Order</h1>					
+                    <h1 class="page-header h3">Sales Order</h1>					
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -14,7 +14,7 @@
 			<div class="col-lg-12">
             <div class="panel panel-info">
 			  <div class="panel-heading">Add Sales Order</div>
-              <form class="bs-example form-horizontal">
+              <form class="bs-example form-horizontal" name="smartrackform">
                 <fieldset>
                   <legend style="display:none">Create Sales Order</legend>
 				<table class="table">
@@ -28,7 +28,8 @@
                 </tr>
                 <tr>
                   <td>
-					<input type="text" id="customer_name" class="form-control" ng-model="customer_name" ng-required="true">					 
+					<input type="text" id="customer_name" class="form-control" ng-model="customer_name" ng-required="true">	
+					<input type="hidden" ng-model="row_index" id="row_index">
 				  </td>
                   <td>	
 					<select id="inv_id" ng-required="true" class="form-control" ng-model="inv_id" ng-required="true" ng-options="inv.label for inv in invDropdownList" ng-change="prefillsalesrow()">						
@@ -56,8 +57,8 @@
 				</tbody>
 				</table>
                   <div class="panel-body">
-                      <button class="btn btn-default" type="reset">Cancel</button> 
-                      <button class="btn btn-primary" ng-click="postRecord('m_sales')">Submit</button> 
+                      <button class="btn btn-info" type="reset">Cancel</button> 
+                      <button class="btn btn-primary {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal}" ng-click="postRecord('m_sales')">Submit</button> 
                   </div>
                 </fieldset>
               </form>

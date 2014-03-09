@@ -50,9 +50,25 @@
 				$inv->isSessionActive();
 				$inv->add_brand();
 				break;
+			case 'update_m_brand':
+				$inv->isSessionActive();
+				$inv->update_brand();
+				break;			
+			case 'del_m_brand':
+				$inv->isSessionActive();
+				$inv->delete_brand();
+				break;
 			case 'm_product':
 				$inv->isSessionActive();
 				$inv->add_product();
+				break;						
+			case 'update_m_product':
+				$inv->isSessionActive();
+				$inv->update_product();
+				break;					
+			case 'del_m_product':
+				$inv->isSessionActive();
+				$inv->delete_product();
 				break;
 			case 'm_product_list':
 				$inv->isSessionActive();
@@ -66,6 +82,14 @@
 				$inv->isSessionActive();
 				$inv->add_inventory();
 				break;
+			case 'update_m_inv':
+				$inv->isSessionActive();
+				$inv->update_inventory();
+				break;
+			case 'del_m_inv':
+				$inv->isSessionActive();
+				$inv->delete_inventory();
+				break;
 			case 'm_sales':
 				$inv->isSessionActive();
 				$inv->add_sales_order();
@@ -77,19 +101,7 @@
 			case 'getProducts':
 				$inv->isSessionActive();
 				$inv->get_products();
-				break;			
-			case 'update_m_brand':
-				$inv->isSessionActive();
-				$inv->update_brand();
-				break;
-			case 'update_m_product':
-				$inv->isSessionActive();
-				$inv->update_product();
-				break;
-			case 'update_m_inv':
-				$inv->isSessionActive();
-				$inv->update_inventory();
-				break;
+				break;	
 			case 'brands_products_and_inv':
 				$inv->isSessionActive();
 				$inv->getBrandsProductsAndInv();

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.16, created on 2014-02-18 21:33:33
+<?php /* Smarty version Smarty-3.1.16, created on 2014-03-09 00:04:35
          compiled from "C:\Apache Group\Apache2.2\htdocs\smartrack\includes\Smarty\templates\add_brand.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:2219352fffbba5f0700-34004168%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '87c2fc7fbbeeff125ce982dabe453ec099c7b6c7' => 
     array (
       0 => 'C:\\Apache Group\\Apache2.2\\htdocs\\smartrack\\includes\\Smarty\\templates\\add_brand.tpl',
-      1 => 1392777205,
+      1 => 1394341474,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <?php if ($_valid && !is_callable('content_52fffbba8e2636_04567655')) {function content_52fffbba8e2636_04567655($_smarty_tpl) {?><div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h4 class="page-header">Brand Master</h4>
+			<h1 class="page-header h3">Brand Master</h1>
 			<div class="alert {{alertBoxClass}}" ng-init="alertBoxClass='hidden'"></div>
 		</div>
 		<!-- /.col-lg-12 -->
@@ -32,26 +32,32 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 		<div class="col-lg-4">
 			<div class="panel panel-info">
 				<div class="panel-heading">Add items</div>
-					<form class="bs-example form-horizontal">
+					<form class="form-horizontal" name="smartrackform">
 						<fieldset>
 							<legend style="display:none">Create items</legend>
 							<table class="table">
 								<tbody>
-									<tr>
-									<td><label for="brand_name">Brand Name</label></td>
+									<tr class="{{!smartrackform.brand_name.$valid && smartrackform.brand_name.$dirty ? 'has-error' : ''}}">
+									<td><label class="control-label" for="brand_name">Brand Name</label></td>
 									<td>
-									<input type="text" ng-model="itemNameModel" id="brand_name" class="form-control" ng-required=true>
-									<input type="hidden" ng-model="itemIdModel" id="brand_id"></td>
+										<input type="text" name="brand_name" ng-model="itemNameModel" id="brand_name" class="form-control" ng-required=true>
+										<input type="hidden" ng-model="itemIdModel" id="brand_id">
+										<input type="hidden" ng-model="row_index" id="row_index">
+										
+									</td>
 									</tr>
-									<tr>
-									<td><label  for="description">Description</label></td>
-									<td><textarea id="description" class="form-control" ng-model="itemDescModel" ng-required=true></textarea></td>
+									<tr class="{{!smartrackform.description.$valid && smartrackform.description.$dirty ? 'has-error' : ''}}">
+									<td><label class="control-label" for="description">Description</label></td>
+									<td><textarea name="description" id="description" class="form-control" ng-model="itemDescModel" ng-required=true></textarea></td>
 									</tr>
+									
 								</tbody>
 							</table>
 							<div class="panel-body">
 							<button class="btn btn-default" type="reset" ng-click="buttonTxt='Add'">Clear</button> 
-							<button class="btn btn-primary" ng-click="postRecord('m_brand')">{{buttonTxt}}</button> 
+							<button class="btn btn-success {{smartrackform.$valid ? '' : 'disabled'}}" ng-click="postRecord('m_brand')">{{buttonTxt}}</button>
+							<button ng-show="buttonTxt=='Update'" class="btn btn-danger {{smartrackform.$valid ? '' : 'disabled'}} {{buttonTxt=='Add' ? 'ng-hide' : ''}}" ng-click="voidRecord('m_brand')">Delete</button> 							
+							
 							</div>
 						</fieldset>
 					</form>
