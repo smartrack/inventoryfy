@@ -7,7 +7,8 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header h3">Inventory Master</h1>					
+                    <h1 class="page-header h3">Inventory Master</h1>
+					<div class="alert {literal}{{alertBoxClass}}{/literal}" ng-init="alertBoxClass='hidden'"></div>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -15,7 +16,7 @@
             <div class="row">
 			<div class="col-lg-12">
             <div class="panel panel-info">
-			  <div class="panel-heading">Add items</div>
+			  <div class="panel-heading">{literal}{{buttonTxt}}{/literal} items</div>
               <form class="form-horizontal" name="smartrackform">
                 <fieldset>
                   <legend style="display:none">Create items</legend>
@@ -53,7 +54,7 @@
 					</select> 
 				  </td>
                   <td class="{literal}{{!smartrackform.item_name.$valid && smartrackform.item_name.$dirty ? 'has-error' : ''}}{/literal}">
-                      <input type="text" name="item_name" id="item_name" class="form-control" ng-required="true" maxlength="30" minlength="3" ng-model="prod_name">
+                      <input type="text" name="item_name" id="item_name" class="form-control" ng-required="true" maxlength="30" minlength="3" ng-model="item_name">
 					  <input type="hidden" ng-model="inv_item_id" id="inv_item_id">
 					  <input type="hidden" ng-model="row_index" id="row_index">
 				  </td>
@@ -86,10 +87,10 @@
 				</tbody>
 				</table>
                   <div class="panel-body">
-                      <button class="btn btn-default" type="reset">Cancel</button> 
+                      <button class="btn btn-default" ng-click="formreset()">Cancel</button> 
                       <button class="btn btn-success {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal}" ng-click="postRecord('m_inv')">{literal}{{buttonTxt}}{/literal}</button> 
 					  <button ng-show="buttonTxt=='Update'" class="btn btn-danger {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal} {literal}{{buttonTxt=='Add' ? 'ng-hide' : ''}}{/literal}" ng-click="voidRecord('m_inv')">Delete</button>					  
-						{literal}{{smartrackform.$valid}}{/literal}
+						
 				  </div>
                 </fieldset>
               </form>
@@ -112,17 +113,19 @@
                   <th>Edit</th>
                   <th>Brand Name</th>
                   <th>Product Name</th>
+                  <th>Item Name</th>
                   <th>Purchase Date</th>
                   <th>Buy Price</th>
                   <th>Sell Price</th>
                   <th>Quantity</th>
                 </tr>
 				
-				<tr ng-repeat="item in inventoryItemList | filter:inventorySearchTxt" ng-click="editListItem($index,'inventoryItemList')">
+				<tr ng-repeat="item in inventoryItemList | filter:inventorySearchTxt" ng-click="editListItem($index,'inventoryItemList')" class="{literal}{{item.class}}{/literal}">
 					<td>{literal}{{$index+1}}{/literal}</td>
 					<td><span class="glyphicon glyphicon-pencil"></span></td>
 					<td>{literal}{{item.brand_name}}{/literal}</td>
 					<td>{literal}{{item.prod_name}}{/literal}</td>
+					<td>{literal}{{item.item_name}}{/literal}</td>
 					<td>{literal}{{item.purchase_date | date : date : 'fullDate'}}{/literal}</td>
 					<td>{literal}{{item.buy_price}}{/literal}</td>
 					<td>{literal}{{item.sell_price}}{/literal}</td>
@@ -131,15 +134,6 @@
 					
 				</tbody></table>				
 				</div>
-				<ul class="pagination">
-                <li class="disabled"><a href="#">«</a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">»</a></li>
-              </ul>
 			</div>
 			</div>
             <!-- /.row -->

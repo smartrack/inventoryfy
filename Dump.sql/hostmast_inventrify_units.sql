@@ -18,30 +18,30 @@ USE `hostmast_inventrify`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `products`
+-- Table structure for table `units`
 --
 
-DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `units`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `products` (
+CREATE TABLE `units` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(50) NOT NULL,
-  `description` varchar(250) NOT NULL,
+  `unit_name` varchar(10) NOT NULL,
+  `items_per_unit` int(11) NOT NULL,
+  `description` int(11) NOT NULL,
   `rstatus` char(1) NOT NULL DEFAULT 'A',
   `edate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `products`
+-- Dumping data for table `units`
 --
 
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'mobile','nothing','A','2014-02-14 02:46:06'),(2,'laptops','nothing','A','2014-02-14 02:46:20'),(3,'accessories','nothing','A','2014-02-14 02:46:30'),(4,'Mobile Repair Hardware','Mobile Repair Hardware','A',NULL),(5,'Mobile Repair Software','Mobile Repair Software','A',NULL);
-/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+LOCK TABLES `units` WRITE;
+/*!40000 ALTER TABLE `units` DISABLE KEYS */;
+/*!40000 ALTER TABLE `units` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-26  9:40:58
+-- Dump completed on 2014-03-10  1:26:11

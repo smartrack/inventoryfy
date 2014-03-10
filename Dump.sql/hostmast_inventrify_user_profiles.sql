@@ -18,30 +18,29 @@ USE `hostmast_inventrify`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `brands`
+-- Table structure for table `user_profiles`
 --
 
-DROP TABLE IF EXISTS `brands`;
+DROP TABLE IF EXISTS `user_profiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `brands` (
+CREATE TABLE `user_profiles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `brand_name` varchar(50) NOT NULL,
-  `description` varchar(250) NOT NULL,
+  `profile_name` varchar(10) NOT NULL,
+  `description` varchar(100) NOT NULL,
   `rstatus` char(1) NOT NULL DEFAULT 'A',
   `edate` datetime DEFAULT NULL,
-  KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `brands`
+-- Dumping data for table `user_profiles`
 --
 
-LOCK TABLES `brands` WRITE;
-/*!40000 ALTER TABLE `brands` DISABLE KEYS */;
-INSERT INTO `brands` VALUES (9,'Nokia-dpi','Nokia Dharmapuri Dealer','A',NULL),(15,'Samsung-thiru','Thirumal enterprise','A',NULL),(16,'LG-Arun','Arun electricals','A',NULL),(17,'Motorolla','Motorolla mobiles dharmapuri','A',NULL),(18,'T-Mobile','chennai T-mobile branch','A',NULL),(19,'Nexus','Google nexus mobile','A',NULL),(20,'AT-T','AT-T Enterprise','A',NULL),(21,'Verizon','All Verizon brands','A',NULL),(22,'Sprintz','All Sprintz mobiles','A',NULL),(23,'Sony','All sony brand mobiles','A',NULL),(24,'Cricket','Criket mobiles','A',NULL),(25,'','','A',NULL);
-/*!40000 ALTER TABLE `brands` ENABLE KEYS */;
+LOCK TABLES `user_profiles` WRITE;
+/*!40000 ALTER TABLE `user_profiles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-26  9:40:57
+-- Dump completed on 2014-03-10  1:26:12

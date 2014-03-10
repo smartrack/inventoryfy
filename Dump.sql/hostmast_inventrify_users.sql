@@ -18,35 +18,34 @@ USE `hostmast_inventrify`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `sales_order`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `sales_order`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sales_order` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) DEFAULT NULL,
-  `customer_name` varchar(45) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `sell_price` int(11) NOT NULL,
-  `sell_date` datetime NOT NULL,
-  `prod_qty` int(11) NOT NULL,
-  `Comments` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `prod_id_idx` (`product_id`),
-  CONSTRAINT `prod_id` FOREIGN KEY (`product_id`) REFERENCES `inventory` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `user_id` varchar(10) NOT NULL,
+  `user_name` varchar(50) NOT NULL,
+  `password` varchar(15) NOT NULL,
+  `cust_id` int(11) NOT NULL,
+  `create_date` date NOT NULL,
+  `profile_id` int(11) NOT NULL,
+  `rstatus` char(1) NOT NULL DEFAULT 'A',
+  `edate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `sales_order`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `sales_order` WRITE;
-/*!40000 ALTER TABLE `sales_order` DISABLE KEYS */;
-INSERT INTO `sales_order` VALUES (4,NULL,'Hariharan',6,31000,'2014-03-02 00:00:00',1,'ccc'),(5,NULL,'Sandeep',8,35000,'2014-03-02 00:00:00',2,'new mobile'),(6,NULL,'Gopinath',7,19000,'2014-03-02 00:00:00',1,'sdsd'),(7,NULL,'Balakumaran',13,17900,'2014-03-02 00:00:00',1,'sfasd'),(8,NULL,'Arun',8,35000,'2014-04-03 00:00:00',1,'xasdfdsa');
-/*!40000 ALTER TABLE `sales_order` ENABLE KEYS */;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin','HMZ Admin User','admin',1,'2014-02-14',0,'A','2014-02-14 00:11:08');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -58,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-03-02 23:36:40
+-- Dump completed on 2014-03-10  1:26:09

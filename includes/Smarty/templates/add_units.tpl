@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="col-lg-4">
 			<div class="panel panel-info">
-				<div class="panel-heading">Add items</div>
+				<div class="panel-heading">{literal}{{buttonTxt}}{/literal} items</div>
 					<form class="form-horizontal" name="smartrackform">
 						<fieldset>
 							<legend style="display:none">Create items</legend>
@@ -34,8 +34,9 @@
 								</tbody>
 							</table>
 							<div class="panel-body">
-							<button class="btn btn-info" type="reset" ng-click="buttonTxt='Add'">Clear</button> 
+							<button class="btn btn-info" ng-click="formreset()">Clear</button> 
 							<button class="btn btn-primary {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal}" ng-click="postRecord('m_units')">{literal}{{buttonTxt}}{/literal}</button> 
+							<button ng-show="buttonTxt=='Update'" class="btn btn-danger {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal} {literal}{{buttonTxt=='Add' ? 'ng-hide' : ''}}{/literal}" ng-click="voidRecord('m_units')">Delete</button> 							
 							</div>
 						</fieldset>
 					</form>
