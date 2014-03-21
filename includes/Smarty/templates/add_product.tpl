@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="col-lg-5">
 			<div class="panel panel-info">
-				<div class="panel-heading">Add Product</div>
+				<div class="panel-heading">{literal}{{buttonTxt}}{/literal} Product</div>
 					<form class="form-horizontal" name="smartrackform">
 						<fieldset>
 							<legend style="display:none">Create Product</legend>
@@ -30,10 +30,10 @@
 									</tr>
 								</tbody>
 							</table>
-							<div class="panel-body">
-							<button class="btn btn-default" type="reset" ng-click="buttonTxt='Add'">Clear</button> 
-							<button class="btn btn-success {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal}" ng-click="postRecord('m_product')">{literal}{{buttonTxt}}{/literal}</button> 
-							<button ng-show="buttonTxt=='Update'" class="btn btn-danger {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal} {literal}{{buttonTxt=='Add' ? 'ng-hide' : ''}}{/literal}" ng-click="voidRecord('m_product')">Delete</button> 							
+							<div class="panel-body">							 
+								<button class="btn btn-success {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal}" ng-click="postRecord('m_product')">{literal}{{buttonTxt}}{/literal}</button> 
+								<button ng-show="buttonTxt=='Update'" class="btn btn-danger {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal} {literal}{{buttonTxt=='Add' ? 'ng-hide' : ''}}{/literal}" ng-click="voidRecord('m_product')">Delete</button> 							
+								<button class="btn btn-default" ng-click="formreset()">Clear</button>
 							</div>
 						</fieldset>
 					</form>
@@ -61,6 +61,12 @@
 					<td><span class="glyphicon glyphicon-pencil"></span></td>
 					<td>{literal}{{item.item_name}}{/literal}</td>
 					<td>{literal}{{item.item_desc}}{/literal}</td>
+					</tr>
+					
+					<tr class="" ng-show="masterItemsList == 0">
+					<td colspan="4" align="center">
+						Hurray!!! No Records.
+					</td>
 					</tr>
 				</tbody></table>				
 			</div>

@@ -31,7 +31,7 @@ CREATE TABLE `products` (
   `rstatus` char(1) NOT NULL DEFAULT 'A',
   `edate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'mobile','nothing','A','2014-02-14 02:46:06'),(2,'laptops','nothing','A','2014-02-14 02:46:20'),(3,'accessories','nothing','A','2014-02-14 02:46:30'),(4,'Mobile Repair Hardware','Mobile Repair Hardware','A',NULL),(5,'Mobile Repair Software','Mobile Repair Software','A',NULL);
+INSERT INTO `products` VALUES (2,'Mobile','All Types of Mobile phone','A',NULL),(3,'Accessories','Mobile accessories','A',NULL),(4,'Mobile Repair','All types of mobile repair','A',NULL);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-26  9:40:58
+-- Dump completed on 2014-03-20 23:33:23

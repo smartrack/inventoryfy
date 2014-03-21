@@ -10,10 +10,10 @@
 	<div class="row">
 		<div class="col-lg-4">
 			<div class="panel panel-info">
-				<div class="panel-heading">Add items</div>
+				<div class="panel-heading">{literal}{{buttonTxt}}{/literal} Brand</div>
 					<form class="form-horizontal" name="smartrackform">
 						<fieldset>
-							<legend style="display:none">Create items</legend>
+							<legend style="display:none">Create Brand</legend>
 							<table class="table">
 								<tbody>
 									<tr class="{literal}{{!smartrackform.brand_name.$valid && smartrackform.brand_name.$dirty ? 'has-error' : ''}}{/literal}">
@@ -31,11 +31,10 @@
 									
 								</tbody>
 							</table>
-							<div class="panel-body">
-							<button class="btn btn-default" type="reset" ng-click="buttonTxt='Add'">Clear</button> 
-							<button class="btn btn-success {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal}" ng-click="postRecord('m_brand')">{literal}{{buttonTxt}}{/literal}</button>
-							<button ng-show="buttonTxt=='Update'" class="btn btn-danger {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal} {literal}{{buttonTxt=='Add' ? 'ng-hide' : ''}}{/literal}" ng-click="voidRecord('m_brand')">Delete</button> 							
-							
+							<div class="panel-body">							
+								<button class="btn btn-success {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal}" ng-click="postRecord('m_brand')">{literal}{{buttonTxt}}{/literal}</button>
+								<button ng-show="buttonTxt=='Update'" class="btn btn-danger {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal} {literal}{{buttonTxt=='Add' ? 'ng-hide' : ''}}{/literal}" ng-click="voidRecord('m_brand')">Delete</button> 							
+								<button class="btn btn-default" ng-click="formreset()">Clear</button> 
 							</div>
 						</fieldset>
 					</form>
@@ -58,23 +57,20 @@
 					<th>Description</th>
 					</tr>
 					
-					<tr ng-repeat="item in masterItemsList | filter:brandListSearchTxt" ng-click="editListItem($index)">
+					<tr ng-repeat="item in masterItemsList | filter:brandListSearchTxt" ng-click="editListItem($index)" class="{literal}{{item.class}}{/literal}">
 					<td>{literal}{{$index+1}}{/literal}</td>
 					<td><span class="glyphicon glyphicon-pencil"></span></td>
 					<td>{literal}{{item.item_name}}{/literal}</td>
 					<td>{literal}{{item.item_desc}}{/literal}</td>
 					</tr>
+					
+					<tr class="" ng-show="masterItemsList == 0">
+					<td colspan="4" align="center">
+						Hurray!!! No Records.
+					</td>
+					</tr>
 				</tbody></table>				
 			</div>
-				<ul class="pagination">
-				<li class="disabled"><a href="#">«</a></li>
-				<li class="active"><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#">»</a></li>
-				</ul>
 		</div>
 		</div>
 <!-- /.row -->

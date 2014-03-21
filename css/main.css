@@ -29,12 +29,12 @@
         margin: 0 0 0 250px;
         padding: 0 30px;
         min-height: 800px;
-        border-left: 1px solid #e7e7e7;
+        border-left: 1px solid #a1a1a1;
     }
 }
 
 .navbar-static-side ul li {
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid #a1a1a1;
 }
 
 /* Navigation */

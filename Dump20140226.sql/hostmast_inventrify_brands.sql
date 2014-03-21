@@ -31,7 +31,7 @@ CREATE TABLE `brands` (
   `rstatus` char(1) NOT NULL DEFAULT 'A',
   `edate` datetime DEFAULT NULL,
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `brands` (
 
 LOCK TABLES `brands` WRITE;
 /*!40000 ALTER TABLE `brands` DISABLE KEYS */;
-INSERT INTO `brands` VALUES (9,'Nokia-dpi','Nokia Dharmapuri Dealer','A',NULL),(15,'Samsung-thiru','Thirumal enterprise','A',NULL),(16,'LG-Arun','Arun electricals','A',NULL),(17,'Motorolla','Motorolla mobiles dharmapuri','A',NULL),(18,'T-Mobile','chennai T-mobile branch','A',NULL),(19,'Nexus','Google nexus mobile','A',NULL),(20,'AT-T','AT-T Enterprise','A',NULL),(21,'Verizon','All Verizon brands','A',NULL),(22,'Sprintz','All Sprintz mobiles','A',NULL),(23,'Sony','All sony brand mobiles','A',NULL),(24,'Cricket','Criket mobiles','A',NULL),(25,'','','A',NULL);
+INSERT INTO `brands` VALUES (1,'Nokia','Nokia Dharmapuri','A',NULL),(2,'Samsung','Samsung Dharmapuri','A',NULL),(3,'Sprintz','Sprintz Dharmapuri','A',NULL),(4,'Nexus','Nexus Chennai','A',NULL),(5,'AT','AT','C',NULL);
 /*!40000 ALTER TABLE `brands` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-26  9:40:57
+-- Dump completed on 2014-03-20 23:33:22

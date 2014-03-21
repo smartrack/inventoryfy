@@ -7,7 +7,13 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header h3">Inventory Master</h1>					
+                    <h1 class="page-header h3">Inventory Master</h1>
+					<div class="alert {literal}{{alertBoxClass}}{/literal}" ng-init="alertBoxClass='hidden'"></div>
+					<div class="alert alert-warning alert-dismissable" ng-show="oosFlag" ng-init="oosFlag=false">
+					  <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="oosFlag=!oosFlag">&times;</button>
+					  <strong>Warning!</strong> {literal}{{outofstockmsg}}{/literal}
+					</div>
+
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -15,7 +21,7 @@
             <div class="row">
 			<div class="col-lg-12">
             <div class="panel panel-info">
-			  <div class="panel-heading">Add items</div>
+			  <div class="panel-heading">{literal}{{buttonTxt}}{/literal} items</div>
               <form class="form-horizontal" name="smartrackform">
                 <fieldset>
                   <legend style="display:none">Create items</legend>
@@ -53,7 +59,7 @@
 					</select> 
 				  </td>
                   <td class="{literal}{{!smartrackform.item_name.$valid && smartrackform.item_name.$dirty ? 'has-error' : ''}}{/literal}">
-                      <input type="text" name="item_name" id="item_name" class="form-control" ng-required="true" maxlength="30" minlength="3" ng-model="prod_name">
+                      <input type="text" name="item_name" id="item_name" class="form-control" ng-required="true" maxlength="30" minlength="3" ng-model="item_name">
 					  <input type="hidden" ng-model="inv_item_id" id="inv_item_id">
 					  <input type="hidden" ng-model="row_index" id="row_index">
 				  </td>
@@ -85,11 +91,10 @@
                 </tr>
 				</tbody>
 				</table>
-                  <div class="panel-body">
-                      <button class="btn btn-default" type="reset">Cancel</button> 
+                  <div class="panel-body">                       
                       <button class="btn btn-success {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal}" ng-click="postRecord('m_inv')">{literal}{{buttonTxt}}{/literal}</button> 
 					  <button ng-show="buttonTxt=='Update'" class="btn btn-danger {literal}{{smartrackform.$valid ? '' : 'disabled'}}{/literal} {literal}{{buttonTxt=='Add' ? 'ng-hide' : ''}}{/literal}" ng-click="voidRecord('m_inv')">Delete</button>					  
-						{literal}{{smartrackform.$valid}}{/literal}
+					  <button class="btn btn-default" ng-click="formreset()">Cancel</button>
 				  </div>
                 </fieldset>
               </form>
@@ -97,12 +102,12 @@
           </div>
         </div>
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-12" ng-init="inventoryItemList=[]">
 				<div class="panel panel-danger">
 				<div class="panel-heading">					
 						<h5 class="pull-left">Inventory List</h5>
 						<div class="col-xs-4 col-md-offset-1">
-						<input type="text" class="form-control input-sm" placeholder="Search" ng-model="inventorySearchTxt">
+						<input ng-hide="inventoryItemList.length < 3" type="text" class="form-control input-sm" placeholder="Search" ng-model="inventorySearchTxt">
 						</div>
 					<div class="clearfix"></div>
 				</div>
@@ -112,34 +117,33 @@
                   <th>Edit</th>
                   <th>Brand Name</th>
                   <th>Product Name</th>
+                  <th>Item Name</th>
                   <th>Purchase Date</th>
                   <th>Buy Price</th>
                   <th>Sell Price</th>
                   <th>Quantity</th>
                 </tr>
 				
-				<tr ng-repeat="item in inventoryItemList | filter:inventorySearchTxt" ng-click="editListItem($index,'inventoryItemList')">
+				<tr ng-repeat="item in inventoryItemList | filter:inventorySearchTxt" ng-click="editListItem($index,'inventoryItemList')" class="{literal}{{item.class}}{/literal}{literal}{{item.prod_qty == 0 ? 'danger':''}}{/literal}">
 					<td>{literal}{{$index+1}}{/literal}</td>
 					<td><span class="glyphicon glyphicon-pencil"></span></td>
 					<td>{literal}{{item.brand_name}}{/literal}</td>
 					<td>{literal}{{item.prod_name}}{/literal}</td>
+					<td>{literal}{{item.item_name}}{/literal}</td>
 					<td>{literal}{{item.purchase_date | date : date : 'fullDate'}}{/literal}</td>
 					<td>{literal}{{item.buy_price}}{/literal}</td>
 					<td>{literal}{{item.sell_price}}{/literal}</td>
 					<td>{literal}{{item.prod_qty}}{/literal}</td>
-					</tr>
+				</tr>
+				
+				<tr class="" ng-show="inventoryItemList == 0">
+					<td colspan="9" align="center">
+						Hurray!!! No Records.
+					</td>
+				</tr>
 					
 				</tbody></table>				
 				</div>
-				<ul class="pagination">
-                <li class="disabled"><a href="#">«</a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">»</a></li>
-              </ul>
 			</div>
 			</div>
             <!-- /.row -->

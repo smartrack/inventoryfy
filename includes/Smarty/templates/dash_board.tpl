@@ -4,7 +4,7 @@
 		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
+                    <h1 class="page-header h3">Dashboard</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -36,7 +36,9 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div id="morris-area-chart"></div>
+                            <div id="morris-area-chart">
+								
+							</div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -50,7 +52,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item" ng-repeat="list in topFiveSalesList">
+                                <a href="?a=P&b=sales" class="list-group-item" ng-repeat="list in topFiveSalesList">
                                     <i class="fa fa-bars fa-fw"></i> {literal}{{list.inv_name}}{/literal} - {literal}{{list.customer_name}}{/literal}
                                     <span class="pull-right text-muted small"><em>{literal}{{list.sell_date | date : date : 'H'}}{/literal}</em>
                                     </span>
