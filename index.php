@@ -94,14 +94,6 @@
 				$inv->isSessionActive();
 				$inv->add_sales_order();
 				break;
-			case 'update_m_sales':
-				$inv->isSessionActive();
-				$inv->update_sales_order();
-				break;
-			case 'del_m_sales':
-				$inv->isSessionActive();
-				$inv->delete_sales_order();
-				break;
 			case 'getBrands':
 				$inv->isSessionActive();
 				$inv->get_brands();

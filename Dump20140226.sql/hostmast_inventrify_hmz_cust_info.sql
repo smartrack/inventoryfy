@@ -18,32 +18,39 @@ USE `hostmast_inventrify`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `hmz_package`
+-- Table structure for table `hmz_cust_info`
 --
 
-DROP TABLE IF EXISTS `hmz_package`;
+DROP TABLE IF EXISTS `hmz_cust_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `hmz_package` (
+CREATE TABLE `hmz_cust_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `package_name` varchar(50) NOT NULL,
-  `no_users` varchar(10) NOT NULL,
+  `cust_id` varchar(10) NOT NULL,
+  `cust_name` varchar(50) NOT NULL,
+  `cust_address` varchar(250) NOT NULL,
+  `cust_district` int(11) NOT NULL,
+  `cust_contact` varchar(50) NOT NULL,
+  `cust_email` varchar(50) NOT NULL,
+  `buy_date` date NOT NULL,
+  `buy_mode` char(1) NOT NULL,
+  `buy_tenure` int(11) NOT NULL,
+  `buy_tenure_mode` char(1) NOT NULL,
+  `package_id` int(11) NOT NULL,
   `rstatus` char(1) NOT NULL DEFAULT 'A',
   `edate` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id` (`id`),
-  KEY `id_2` (`id`),
-  KEY `id_3` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `hmz_package`
+-- Dumping data for table `hmz_cust_info`
 --
 
-LOCK TABLES `hmz_package` WRITE;
-/*!40000 ALTER TABLE `hmz_package` DISABLE KEYS */;
-/*!40000 ALTER TABLE `hmz_package` ENABLE KEYS */;
+LOCK TABLES `hmz_cust_info` WRITE;
+/*!40000 ALTER TABLE `hmz_cust_info` DISABLE KEYS */;
+INSERT INTO `hmz_cust_info` VALUES (1,'hmz','hostmasterzone','singapore',0,'94656228','rsilambarasan@gmail.com','0000-00-00','',0,'',0,'A','2014-02-14 00:09:54');
+/*!40000 ALTER TABLE `hmz_cust_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-03-10  1:26:11
+-- Dump completed on 2014-02-26  9:40:58
